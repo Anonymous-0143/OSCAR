@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  :root {
+    --bg-primary: #ffffff;
+    --text-primary: #09090b;
+    /* Zinc 950 */
+    --text-secondary: #71717a;
+    /* Zinc 500 */
+    --dot-color: #d4d4d8;
+    /* Zinc 300 - more visible */
+    --glass-bg: rgba(255, 255, 255, 0.4);
+    --glass-border: rgba(0, 0, 0, 0.1);
+  }
+
+  .dark {
+    --bg-primary: #000000;
+    --text-primary: #ffffff;
+    --text-secondary: #a1a1aa;
+    /* Zinc 400 */
+    --dot-color: #52525b;
+    /* Zinc 600 - more visible */
+    --glass-bg: rgba(20, 20, 20, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.1);
+  }
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+  @apply backdrop-blur-md border rounded-xl transition-colors duration-300;
+  background-color: var(--glass-bg);
+  border-color: var(--glass-border);
+}
+
+.glass-button {
+  @apply backdrop-blur-sm border transition-all duration-300;
+  background-color: var(--glass-bg);
+  border-color: var(--glass-border);
+  color: var(--text-primary);
+}
+
+.glass-button:hover {
+  @apply opacity-90;
+  background-color: rgba(128, 128, 128, 0.2);
+}
+
+.glass-button:focus,
+.glass-button:focus-within,
+.glass-button:active {
+  background-color: var(--glass-bg);
+  border-color: var(--glass-border);
+  color: var(--text-primary);
+  outline: none;
+}
+
+/* Animations */
+@keyframes pulse-soft {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* View Transitions handled in ToggleTheme.jsx */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Browser Autocomplete Styling */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: var(--text-primary);
+  transition: background-color 5000s ease-in-out 0s;
+  box-shadow: inset 0 0 20px 20px rgba(0, 0, 0, 0.8);
+  caret-color: var(--text-primary);
+}
+
+/* Firefox Autocomplete */
+input:-moz-autofill {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Autocomplete dropdown styling */
+input[type="text"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}

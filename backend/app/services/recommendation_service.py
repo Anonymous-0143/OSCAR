@@ -59,7 +59,23 @@ class RecommendationService:
             if languages:
                 search_languages = languages[:3]  # Limit to top 3
             else:
-                search_languages = list(skill_profile.get('languages', {}).keys())[:3]
+                # Sort languages by weight (descending) and include all of them
+                user_langs = skill_profile.get('languages', {})
+                sorted_langs = sorted(user_langs.items(), key=lambda x: x[1], reverse=True)
+                search_languages = [l[0] for l in sorted_langs]
+            
+            # Fetch user's own repositories to exclude them
+            try:
+                user_repos = await self.github_service.get_user_repos(username)
+                user_repo_names = [r['full_name'] for r in user_repos]
+                
+                if exclude_repos is None:
+                    exclude_repos = []
+                
+                exclude_repos.extend(user_repo_names)
+                logger.info(f"Excluding {len(user_repo_names)} user repositories from recommendations")
+            except Exception as e:
+                logger.warning(f"Failed to fetch user repos for exclusion: {e}")
             
             logger.info(f"Searching for repos in languages: {search_languages}")
             
@@ -91,7 +107,7 @@ class RecommendationService:
                     all_ranked_repos.extend(ranked_repos[:30])
                     logger.info(f"Added {min(30, len(ranked_repos))} ranked {lang} repositories")
             
-            # Remove duplicates by full_name and re-sort
+            # Remove duplicates by full_name while preserving order
             seen = set()
             unique_repos = []
             for repo in all_ranked_repos:
@@ -100,8 +116,11 @@ class RecommendationService:
                     seen.add(repo_name)
                     unique_repos.append(repo)
             
-            # Re-sort by score and limit
-            unique_repos.sort(key=lambda x: x['score'], reverse=True)
+            # NOTE: We do NOT re-sort globally by score here, to preserve the 
+            # "group by language" order (highest weighted language first).
+            # The frontend will group them anyway, but this ensures fairness 
+            # if we hit the total limit.
+            
             final_results = unique_repos[:limit]
             
             logger.info(f"Returning {len(final_results)} total repository recommendations")

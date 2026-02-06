@@ -33,7 +33,17 @@ export default function ProfilePage() {
         const profileData = await analyzeUser(username);
         setUserProfile(profileData);
 
-        const reposData = await recommendRepos(username, { limit: 30 });
+        // Calculate dynamic limit based on number of languages (30 per language)
+        // Note: profileData contains skill_profile which has languages
+        const languages = profileData.skill_profile?.languages || {};
+        const languageCount = Object.keys(languages).length || 3;
+        const dynamicLimit = Math.max(30, languageCount * 30);
+        
+        console.log('Profile Languages:', Object.keys(languages));
+        console.log('Dynamic Limit:', dynamicLimit);
+
+        const reposData = await recommendRepos(username, { limit: dynamicLimit });
+        console.log('Returned Repositories:', reposData.recommendations.length);
         setRepositories(reposData);
 
         const issuesData = await recommendIssues(username, { limit: 20, difficulty: 'beginner' });
@@ -83,7 +93,7 @@ export default function ProfilePage() {
     });
 
     Object.assign(reposByLanguage, grouped);
-    languages.push(...Object.keys(grouped).sort((a, b) => grouped[b].length - grouped[a].length).slice(0, 3));
+    languages.push(...Object.keys(grouped).sort((a, b) => grouped[b].length - grouped[a].length));
   }
 
   const filteredRepos = selectedLanguage === 'all' 

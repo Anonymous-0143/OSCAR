@@ -38,15 +38,19 @@ class GitHubService:
         # Use class-level _client to ensure it's shared across all instances
         if GitHubService._client is None or GitHubService._client.is_closed:
             limits = httpx.Limits(
-                max_keepalive_connections=20,
-                max_connections=50,
+                max_keepalive_connections=5,
+                max_connections=10,
                 keepalive_expiry=30.0
+            )
+            transport = httpx.AsyncHTTPTransport(
+                retries=3,
+                verify=False,
+                limits=limits
             )
             GitHubService._client = httpx.AsyncClient(
                 headers=self.headers,
                 timeout=30.0,
-                limits=limits,
-                verify=False  # Disable SSL verification for corporate/proxy networks
+                transport=transport
             )
             logger.info("Created new shared HTTP client for GitHub API")
         return GitHubService._client

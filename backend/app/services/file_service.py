@@ -1,7 +1,7 @@
 """Service for fetching and analyzing repository files."""
 
 import httpx
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Any, Optional, Tuple
 from datetime import datetime
 from app.config import get_settings
 from app.utils import logger, GitHubAPIError
@@ -121,7 +121,7 @@ class FileService:
         owner: str,
         repo: str,
         branch: Optional[str] = None
-    ) -> List[Dict[str, Any]]:
+    ) -> Tuple[List[Dict[str, Any]], str]:
         """
         Fetch repository file tree using the repository's default branch.
         
@@ -131,17 +131,18 @@ class FileService:
             branch: Branch name (if None, will use repository's default branch)
             
         Returns:
-            List of file/directory objects
+            Tuple of (List of file/directory objects, resolved_branch_name)
         """
         # Check cache first (10 minute TTL for repo trees)
         from app.services.cache_service import CacheService
         cache = CacheService()
-        cache_key = f"repo_tree:{owner}/{repo}:{branch or 'default'}"
+        # Use v2 key to avoid conflicting with old cached list-only data
+        cache_key = f"repo_tree_v2:{owner}/{repo}:{branch or 'default'}"
         
-        cached_tree = cache.get(cache_key, ttl_seconds=600)  # 10 minutes
-        if cached_tree is not None:
+        cached_data = cache.get(cache_key, ttl_seconds=600)  # 10 minutes
+        if cached_data is not None:
             logger.info(f"Using cached tree for {owner}/{repo} (branch: {branch or 'default'})")
-            return cached_tree
+            return cached_data
         
         
         client = await self._get_client()
@@ -193,10 +194,11 @@ class FileService:
             files = [item for item in data.get('tree', []) if item['type'] == 'blob']
             
             # Cache the result
-            cache.set(cache_key, files)
+            result = (files, branch)
+            cache.set(cache_key, result)
             
             logger.info(f"Fetched {len(files)} files from {owner}/{repo} (branch: {branch}, commit: {commit_sha[:7]})")
-            return files
+            return result
             
         except httpx.HTTPStatusError as e:
             logger.error(f"HTTP error fetching repo tree for {owner}/{repo}: {e}")
@@ -325,7 +327,7 @@ class FileService:
         """
         try:
             # Fetch repository files (will auto-detect default branch if branch is None)
-            files = await self.fetch_repo_tree(owner, repo, branch)
+            files, resolved_branch = await self.fetch_repo_tree(owner, repo, branch)
             
             recommendations = []
             
@@ -357,7 +359,7 @@ class FileService:
                         name=path.split('/')[-1],
                         language=language,
                         size=size,
-                        url=f"https://github.com/{owner}/{repo}/blob/{branch}/{path}",
+                        url=f"https://github.com/{owner}/{repo}/blob/{resolved_branch}/{path}",
                         content_url=file_data.get('url', '')
                     )
                     

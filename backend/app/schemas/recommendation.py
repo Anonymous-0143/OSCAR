@@ -10,7 +10,7 @@ class RecommendReposRequest(BaseModel):
     """Request schema for repository recommendations."""
     
     github_username: str = Field(..., min_length=1, max_length=39)
-    limit: int = Field(default=10, ge=1, le=50)
+    limit: int = Field(default=10, ge=1, le=500)
     min_stars: int = Field(default=100, ge=0)
     languages: Optional[List[str]] = None
     exclude_repos: Optional[List[str]] = None

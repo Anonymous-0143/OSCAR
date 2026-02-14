@@ -74,6 +74,22 @@ export default function ProfilePage() {
     loadProfile();
   }, [username, navigate]);
 
+  // Force dark mode on mount
+  useEffect(() => {
+    // Save current theme
+    const wasDark = document.documentElement.classList.contains('dark');
+    
+    // Force dark mode
+    document.documentElement.classList.add('dark');
+    
+    // Cleanup: restore previous theme if it wasn't dark
+    return () => {
+      if (!wasDark) {
+        document.documentElement.classList.remove('dark');
+      }
+    };
+  }, []);
+
   const handleReset = () => {
     navigate('/');
   };
@@ -158,7 +174,6 @@ export default function ProfilePage() {
               <span className="text-gray-900 dark:text-white" style={{fontSize: '1.5rem', fontWeight: 'bold'}}>OSCAR</span>
             </div>
             <div className="flex items-center gap-4">
-              <ToggleTheme />
               <button 
                 onClick={handleReset} 
                 className="glass-button"

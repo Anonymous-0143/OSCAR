@@ -1,13 +1,16 @@
-import { Search, Github } from 'lucide-react';
+import { Search, Github, Terminal, Cpu, Users, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { BorderBeam } from './ui/BorderBeam';
-import { MagicCard } from './ui/MagicCard';
+import { BentoCard } from './ui/BentoCard';
 import { ToggleTheme } from './ui/ToggleTheme';
 import { DynamicNavigation } from './ui/DynamicNavigation';
 import { Home, Star, BookOpen } from 'lucide-react';
 
+import { useTheme } from '../hooks/useTheme';
+
 export default function LandingPage() {
   const navigate = useNavigate();
+  const isDark = useTheme();
   
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,6 +24,45 @@ export default function LandingPage() {
     { id: 'home', label: 'Home', href: '#home', icon: <Home size={16} /> },
     { id: 'features', label: 'Features', href: '#features', icon: <Star size={16} /> },
     { id: 'how-it-works', label: 'Working', href: '#how-it-works', icon: <BookOpen size={16} /> },
+  ];
+
+  const features = [
+    {
+      Icon: <Cpu className="h-6 w-6" />,
+      name: "Smart Matching Engine",
+      description: "Our advanced algorithm analyzes your coding style, language preferences, and commit history to find repositories that perfectly match your expertise.",
+      href: "#",
+      // cta: "Learn more",
+      className: "col-span-3 lg:col-span-2",
+      background: <div className="absolute right-0 top-0 h-[300px] w-[600px] bg-gradient-to-l from-blue-500/10 to-transparent" />,
+    },
+    {
+      Icon: <Terminal className="h-6 w-6" />,
+      name: "Good First Issues",
+      description: "Specifically curated issues for beginners to help you make your first impact in open source.",
+      href: "#",
+      // cta: "Explore",
+      className: "col-span-3 lg:col-span-1",
+      background: <div className="absolute right-0 top-0 h-[300px] w-[600px] bg-gradient-to-l from-emerald-500/10 to-transparent" />,
+    },
+    {
+      Icon: <Users className="h-6 w-6" />,
+      name: "Community Insights",
+      description: "Get deep insights into repository activity, maintainer responsiveness, and community health before you contribute.",
+      href: "#",
+      // cta: "See how",
+      className: "col-span-3 lg:col-span-1",
+      background: <div className="absolute right-0 top-0 h-[300px] w-[600px] bg-gradient-to-l from-purple-500/10 to-transparent" />,
+    },
+    {
+      Icon: <Github className="h-6 w-6" />,
+      name: "Seamless Integration",
+      description: "Connect directly with GitHub to pull your portfolio and push your contributions without leaving the platform.",
+      href: "#",
+      // cta: "Connect",
+      className: "col-span-3 lg:col-span-2",
+      background: <div className="absolute right-0 top-0 h-[300px] w-[600px] bg-gradient-to-l from-orange-500/10 to-transparent" />,
+    },
   ];
 
   return (
@@ -41,16 +83,17 @@ export default function LandingPage() {
       <section id="home" className="min-h-screen flex items-center justify-center px-4 relative bg-transparent">
         <div className="max-w-4xl w-full text-center mx-auto">
           {/* Logo */}
-          <div className="flex items-center justify-center gap-4 mb-8" style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', marginBottom: '2rem'}}>
+          <div className="flex items-center justify-center gap-2 mb-8" style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', marginBottom: '2rem'}}>
             <video 
+              key={isDark ? 'dark' : 'light'}
               autoPlay 
               loop 
               muted 
               playsInline
-              style={{width: '120px', height: '120px', objectFit: 'contain'}}
+              style={{width: '140px', height: '140px', objectFit: 'contain'}}
               className="text-gray-900 dark:text-white"
             >
-              <source src="/logo.mp4" type="video/mp4" />
+              <source src={isDark ? "/catvid.mp4" : "/logo.mp4"} type="video/mp4" />
             </video>
             <h1 className="text-6xl font-bold text-gray-900 dark:text-white" style={{fontSize: '3.75rem', fontWeight: '800', fontFamily: '"Outfit", sans-serif', letterSpacing: '-0.02em'}}>OSCAR</h1>
           </div>
@@ -101,86 +144,65 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* FEATURES SECTION - Full Page */}
-      <section id="features" className="min-h-screen flex items-center justify-center px-4 relative bg-transparent">
-        <div className="max-w-4xl w-full mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-12 text-gray-900 dark:text-white" style={{fontSize: '2.5rem', fontWeight: '800', textAlign: 'center', marginBottom: '3rem', fontFamily: '"Outfit", sans-serif', letterSpacing: '-0.02em'}}>
-            Features
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6" style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem'}}>
-            <MagicCard
-              icon="🎯"
-              title="Smart Matching"
-              description="TF-IDF & cosine similarity for precise skill matching"
-            />
-            <MagicCard
-              icon="💡"
-              title="Explainable AI"
-              description="Understand why each repository was recommended"
-            />
-            <MagicCard
-              icon="🚀"
-              title="Beginner Friendly"
-              description="Curated issues perfect for your skill level"
-            />
+      {/* FEATURES SECTION - Bento Grid */}
+      <section id="features" className="min-h-screen flex items-center justify-center px-4 relative bg-transparent py-20">
+        <div className="max-w-6xl w-full mx-auto">
+          <div className="text-center mb-16 space-y-4 animate-fade-in-up">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white" style={{fontFamily: '"Outfit", sans-serif', letterSpacing: '-0.02em'}}>
+              Engineered for Developers
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              Everything you need to find your place in the open source ecosystem.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 auto-rows-[250px] animate-fade-in-up animation-delay-200">
+            {features.map((feature, idx) => (
+              <BentoCard key={idx} {...feature} />
+            ))}
           </div>
         </div>
       </section>
 
-      {/* HOW IT WORKS SECTION - Full Page */}
-      <section id="how-it-works" className="min-h-screen flex items-center justify-center px-4 relative bg-transparent">
+      {/* HOW IT WORKS SECTION - Timeline */}
+      <section id="how-it-works" className="min-h-screen flex items-center justify-center px-4 relative bg-transparent py-20">
         <div className="max-w-5xl w-full mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-12 text-gray-900 dark:text-white" style={{fontSize: '2.25rem', fontWeight: '800', textAlign: 'center', marginBottom: '3rem', fontFamily: '"Outfit", sans-serif', letterSpacing: '-0.02em'}}>
-            How It Works
-          </h2>
+          <div className="text-center mb-24 space-y-4 animate-fade-in-up">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white" style={{fontFamily: '"Outfit", sans-serif', letterSpacing: '-0.02em'}}>
+              How It Works
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-400">
+              From analysis to contribution in four steps.
+            </p>
+          </div>
           
-          <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8" style={{maxWidth: '64rem', marginLeft: 'auto', marginRight: 'auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2rem'}}>
-            {/* Step 1 */}
-            <div className="relative text-center" style={{position: 'relative', textAlign: 'center'}}>
-              <div className="glass-panel w-20 h-20 mx-auto mb-4 flex items-center justify-center rounded-full" style={{width: '5rem', height: '5rem', marginLeft: 'auto', marginRight: 'auto', marginBottom: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%'}}>
-                <span style={{fontSize: '2rem'}}>📝</span>
-              </div>
-              <div className="glass-panel px-4 py-2 inline-block mb-2" style={{padding: '0.5rem 1rem', display: 'inline-block', marginBottom: '0.5rem', borderRadius: '0.5rem'}}>
-                <span className="text-sm font-semibold text-gray-400" style={{fontSize: '0.875rem', fontWeight: 600, color: '#9ca3af'}}>Step 1</span>
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2" style={{fontSize: '1.125rem', fontWeight: 'bold', marginBottom: '0.5rem'}}>Enter Username</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400" style={{fontSize: '0.875rem'}}>Simply provide your GitHub username</p>
-            </div>
+          <div className="relative">
+            {/* Vertical Line */}
+            <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-transparent via-gray-300 dark:via-gray-700 to-transparent transform md:-translate-x-1/2"></div>
 
-            {/* Step 2 */}
-            <div className="relative text-center" style={{position: 'relative', textAlign: 'center'}}>
-              <div className="glass-panel w-20 h-20 mx-auto mb-4 flex items-center justify-center rounded-full" style={{width: '5rem', height: '5rem', marginLeft: 'auto', marginRight: 'auto', marginBottom: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%'}}>
-                <span style={{fontSize: '2rem'}}>🔍</span>
-              </div>
-              <div className="glass-panel px-4 py-2 inline-block mb-2" style={{padding: '0.5rem 1rem', display: 'inline-block', marginBottom: '0.5rem', borderRadius: '0.5rem'}}>
-                <span className="text-sm font-semibold text-gray-400" style={{fontSize: '0.875rem', fontWeight: 600, color: '#9ca3af'}}>Step 2</span>
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2" style={{fontSize: '1.125rem', fontWeight: 'bold', marginBottom: '0.5rem'}}>AI Analysis</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400" style={{fontSize: '0.875rem'}}>Our AI analyzes your skills & experience</p>
-            </div>
+            <div className="space-y-12 md:space-y-24">
+              {[
+                { number: "01", title: "Enter Username", desc: "Start by entering your GitHub username. No signup required.", align: "left" },
+                { number: "02", title: "AI Analysis", desc: "Our engine scans your public repositories, languages, and commit history to build a skill profile.", align: "right" },
+                { number: "03", title: "Get Recommendations", desc: "Receive tailored repository suggestions with 'Why this match' explanations.", align: "left" },
+                { number: "04", title: "Start Contributing", desc: "Pick a 'Good First Issue' and make your impact on the community.", align: "right" }
+              ].map((step, idx) => (
+                <div key={idx} className={`relative flex flex-col md:flex-row items-center ${step.align === 'left' ? 'md:flex-row' : 'md:flex-row-reverse'} animate-fade-in-up`} style={{animationDelay: `${idx * 0.2}s`}}>
+                  
+                  {/* Content */}
+                  <div className={`w-full md:w-1/2 pl-20 md:pl-0 ${step.align === 'left' ? 'md:pr-12 md:text-right text-left' : 'md:pl-12 md:text-left text-left'}`}>
+                    <div className="text-sm font-bold text-blue-500 mb-2 tracking-widest">STEP {step.number}</div>
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{step.title}</h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-lg">{step.desc}</p>
+                  </div>
 
-            {/* Step 3 */}
-            <div className="relative text-center" style={{position: 'relative', textAlign: 'center'}}>
-              <div className="glass-panel w-20 h-20 mx-auto mb-4 flex items-center justify-center rounded-full" style={{width: '5rem', height: '5rem', marginLeft: 'auto', marginRight: 'auto', marginBottom: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%'}}>
-                <span style={{fontSize: '2rem'}}>🎯</span>
-              </div>
-              <div className="glass-panel px-4 py-2 inline-block mb-2" style={{padding: '0.5rem 1rem', display: 'inline-block', marginBottom: '0.5rem', borderRadius: '0.5rem'}}>
-                <span className="text-sm font-semibold text-gray-400" style={{fontSize: '0.875rem', fontWeight: 600, color: '#9ca3af'}}>Step 3</span>
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2" style={{fontSize: '1.125rem', fontWeight: 'bold', marginBottom: '0.5rem'}}>Get Matches</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400" style={{fontSize: '0.875rem'}}>Receive personalized recommendations</p>
-            </div>
-
-            {/* Step 4 */}
-            <div className="relative text-center" style={{position: 'relative', textAlign: 'center'}}>
-              <div className="glass-panel w-20 h-20 mx-auto mb-4 flex items-center justify-center rounded-full" style={{width: '5rem', height: '5rem', marginLeft: 'auto', marginRight: 'auto', marginBottom: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%'}}>
-                <span style={{fontSize: '2rem'}}>🚀</span>
-              </div>
-              <div className="glass-panel px-4 py-2 inline-block mb-2" style={{padding: '0.5rem 1rem', display: 'inline-block', marginBottom: '0.5rem', borderRadius: '0.5rem'}}>
-                <span className="text-sm font-semibold text-gray-400" style={{fontSize: '0.875rem', fontWeight: 600, color: '#9ca3af'}}>Step 4</span>
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2" style={{fontSize: '1.125rem', fontWeight: 'bold', marginBottom: '0.5rem'}}>Start Contributing</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400" style={{fontSize: '0.875rem'}}>Begin your open source journey</p>
+                  {/* Marker */}
+                  <div className="absolute left-8 md:left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full bg-white dark:bg-black border-4 border-blue-500 z-10 box-content top-0 md:top-1/2 md:-translate-y-1/2"></div>
+                  
+                  {/* Empty half for desktop spacing */}
+                  <div className="hidden md:block w-1/2"></div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

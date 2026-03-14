@@ -1,7 +1,6 @@
 import { Search, Github, Terminal, Cpu, Users, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { BorderBeam } from './ui/BorderBeam';
-import { BentoCard } from './ui/BentoCard';
 import { ToggleTheme } from './ui/ToggleTheme';
 import { DynamicNavigation } from './ui/DynamicNavigation';
 import { Home, Star, BookOpen } from 'lucide-react';
@@ -23,45 +22,37 @@ export default function LandingPage() {
   const navLinks = [
     { id: 'home', label: 'Home', href: '#home', icon: <Home size={16} /> },
     { id: 'features', label: 'Features', href: '#features', icon: <Star size={16} /> },
-    { id: 'how-it-works', label: 'Working', href: '#how-it-works', icon: <BookOpen size={16} /> },
+    { id: 'contact', label: 'Contact', href: '#contact', icon: <BookOpen size={16} /> },
   ];
 
   const features = [
     {
-      Icon: <Cpu className="h-6 w-6" />,
+      Icon: <Cpu className="h-8 w-8" />,
       name: "Smart Matching Engine",
       description: "Our advanced algorithm analyzes your coding style, language preferences, and commit history to find repositories that perfectly match your expertise.",
-      href: "#",
-      // cta: "Learn more",
-      className: "col-span-3 lg:col-span-2",
-      background: <div className="absolute right-0 top-0 h-[300px] w-[600px] bg-gradient-to-l from-blue-500/10 to-transparent" />,
+      bgClass: "from-blue-500/10 to-transparent",
+      iconColor: "text-blue-500 dark:text-blue-400"
     },
     {
-      Icon: <Terminal className="h-6 w-6" />,
+      Icon: <Terminal className="h-8 w-8" />,
       name: "Good First Issues",
       description: "Specifically curated issues for beginners to help you make your first impact in open source.",
-      href: "#",
-      // cta: "Explore",
-      className: "col-span-3 lg:col-span-1",
-      background: <div className="absolute right-0 top-0 h-[300px] w-[600px] bg-gradient-to-l from-emerald-500/10 to-transparent" />,
+      bgClass: "from-emerald-500/10 to-transparent",
+      iconColor: "text-emerald-500 dark:text-emerald-400"
     },
     {
-      Icon: <Users className="h-6 w-6" />,
+      Icon: <Users className="h-8 w-8" />,
       name: "Community Insights",
       description: "Get deep insights into repository activity, maintainer responsiveness, and community health before you contribute.",
-      href: "#",
-      // cta: "See how",
-      className: "col-span-3 lg:col-span-1",
-      background: <div className="absolute right-0 top-0 h-[300px] w-[600px] bg-gradient-to-l from-purple-500/10 to-transparent" />,
+      bgClass: "from-purple-500/10 to-transparent",
+      iconColor: "text-purple-500 dark:text-purple-400"
     },
     {
-      Icon: <Github className="h-6 w-6" />,
+      Icon: <Github className="h-8 w-8" />,
       name: "Seamless Integration",
       description: "Connect directly with GitHub to pull your portfolio and push your contributions without leaving the platform.",
-      href: "#",
-      // cta: "Connect",
-      className: "col-span-3 lg:col-span-2",
-      background: <div className="absolute right-0 top-0 h-[300px] w-[600px] bg-gradient-to-l from-orange-500/10 to-transparent" />,
+      bgClass: "from-orange-500/10 to-transparent",
+      iconColor: "text-orange-500 dark:text-orange-400"
     },
   ];
 
@@ -144,66 +135,164 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* FEATURES SECTION - Bento Grid */}
-      <section id="features" className="min-h-screen flex items-center justify-center px-4 relative bg-transparent py-20">
-        <div className="max-w-6xl w-full mx-auto">
-          <div className="text-center mb-16 space-y-4 animate-fade-in-up">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white" style={{fontFamily: '"Outfit", sans-serif', letterSpacing: '-0.02em'}}>
-              Engineered for Developers
+      {/* PREMIER FEATURES SECTION */}
+      <section id="features" className="min-h-screen flex items-center justify-center px-4 relative bg-transparent py-24 overflow-hidden">
+        {/* Decorative background blurs */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-7xl h-full opacity-30 dark:opacity-20 pointer-events-none">
+          <div className="absolute top-[10%] left-[5%] w-72 h-72 bg-blue-500/30 rounded-full mix-blend-multiply filter blur-[100px] animate-pulse-soft"></div>
+          <div className="absolute top-[40%] right-[5%] w-72 h-72 bg-purple-500/30 rounded-full mix-blend-multiply filter blur-[100px] animate-pulse-soft animation-delay-200"></div>
+          <div className="absolute bottom-[10%] left-[30%] w-72 h-72 bg-emerald-500/30 rounded-full mix-blend-multiply filter blur-[100px] animate-pulse-soft animation-delay-400"></div>
+        </div>
+
+        <div className="max-w-7xl w-full mx-auto relative z-10 block">
+          <div className="text-center mb-24 space-y-6 animate-fade-in-up">
+            <h2 className="text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-500 dark:from-white dark:to-gray-400 tracking-tight" style={{fontFamily: '"Outfit", sans-serif'}}>
+              Supercharge Your Output
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Everything you need to find your place in the open source ecosystem.
+            <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto font-light">
+              Experience a breakthrough in how you discover and contribute to open source projects.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 auto-rows-[250px] animate-fade-in-up animation-delay-200">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 animate-fade-in-up animation-delay-200">
             {features.map((feature, idx) => (
-              <BentoCard key={idx} {...feature} />
+              <div 
+                key={idx} 
+                className="group relative rounded-3xl p-8 transition-all duration-500 hover:-translate-y-2 border border-gray-200 dark:border-white/10 bg-white/70 dark:bg-black/70 backdrop-blur-xl overflow-hidden hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_20px_40px_-15px_rgba(255,255,255,0.05)]"
+              >
+                {/* Subtle gradient overlay on hover */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${feature.bgClass} opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`}></div>
+                
+                <div className="relative z-10 flex flex-col h-full">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-gray-100 to-white dark:from-gray-800 dark:to-black border border-gray-200 dark:border-white/10 flex items-center justify-center mb-8 shadow-inner group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+                    <div className={feature.iconColor}>
+                      {feature.Icon}
+                    </div>
+                  </div>
+                  
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4" style={{fontFamily: '"Outfit", sans-serif'}}>
+                    {feature.name}
+                  </h3>
+                  
+                  <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-md flex-grow">
+                    {feature.description}
+                  </p>
+                  
+                  <div className={`mt-8 pt-6 border-t border-gray-200 dark:border-white/10 flex items-center ${feature.iconColor} font-semibold transition-all duration-300`}>
+                    <span className="opacity-80 group-hover:opacity-100">Explore Feature</span>
+                    <ArrowRight className="w-5 h-5 ml-2 transform group-hover:translate-x-2 transition-transform duration-300 opacity-80 group-hover:opacity-100" />
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* HOW IT WORKS SECTION - Timeline */}
-      <section id="how-it-works" className="min-h-screen flex items-center justify-center px-4 relative bg-transparent py-20">
-        <div className="max-w-5xl w-full mx-auto">
-          <div className="text-center mb-24 space-y-4 animate-fade-in-up">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white" style={{fontFamily: '"Outfit", sans-serif', letterSpacing: '-0.02em'}}>
-              How It Works
+      {/* CONTACT SECTION */}
+      <section id="contact" className="min-h-screen flex items-center justify-center px-4 relative bg-transparent py-24 overflow-hidden">
+        {/* Decorative background blurs */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl h-full opacity-30 dark:opacity-20 pointer-events-none">
+          <div className="absolute top-[20%] left-[10%] w-64 h-64 bg-blue-500/30 rounded-full mix-blend-multiply filter blur-[80px] animate-pulse-soft"></div>
+          <div className="absolute bottom-[20%] right-[10%] w-64 h-64 bg-purple-500/30 rounded-full mix-blend-multiply filter blur-[80px] animate-pulse-soft animation-delay-400"></div>
+        </div>
+
+        <div className="max-w-5xl w-full mx-auto relative z-10">
+          <div className="text-center mb-16 space-y-4 animate-fade-in-up">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-500 dark:from-white dark:to-gray-400 tracking-tight" style={{fontFamily: '"Outfit", sans-serif', letterSpacing: '-0.02em'}}>
+              Get In Touch
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
-              From analysis to contribution in four steps.
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto font-light">
+              Have questions or want to collaborate? Send me a message.
             </p>
           </div>
           
-          <div className="relative">
-            {/* Vertical Line */}
-            <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-transparent via-gray-300 dark:via-gray-700 to-transparent transform md:-translate-x-1/2"></div>
-
-            <div className="space-y-12 md:space-y-24">
-              {[
-                { number: "01", title: "Enter Username", desc: "Start by entering your GitHub username. No signup required.", align: "left" },
-                { number: "02", title: "AI Analysis", desc: "Our engine scans your public repositories, languages, and commit history to build a skill profile.", align: "right" },
-                { number: "03", title: "Get Recommendations", desc: "Receive tailored repository suggestions with 'Why this match' explanations.", align: "left" },
-                { number: "04", title: "Start Contributing", desc: "Pick a 'Good First Issue' and make your impact on the community.", align: "right" }
-              ].map((step, idx) => (
-                <div key={idx} className={`relative flex flex-col md:flex-row items-center ${step.align === 'left' ? 'md:flex-row' : 'md:flex-row-reverse'} animate-fade-in-up`} style={{animationDelay: `${idx * 0.2}s`}}>
-                  
-                  {/* Content */}
-                  <div className={`w-full md:w-1/2 pl-20 md:pl-0 ${step.align === 'left' ? 'md:pr-12 md:text-right text-left' : 'md:pl-12 md:text-left text-left'}`}>
-                    <div className="text-sm font-bold text-blue-500 mb-2 tracking-widest">STEP {step.number}</div>
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{step.title}</h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-lg">{step.desc}</p>
-                  </div>
-
-                  {/* Marker */}
-                  <div className="absolute left-8 md:left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full bg-white dark:bg-black border-4 border-blue-500 z-10 box-content top-0 md:top-1/2 md:-translate-y-1/2"></div>
-                  
-                  {/* Empty half for desktop spacing */}
-                  <div className="hidden md:block w-1/2"></div>
+          <div className="flex flex-col md:flex-row gap-8 lg:gap-12 animate-fade-in-up animation-delay-200">
+            
+            {/* Contact Info Cards */}
+            <div className="w-full md:w-1/3 flex flex-col gap-6">
+              <div className="bg-white/60 dark:bg-black/60 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-8 transition-all duration-300 hover:border-blue-500/50 hover:shadow-[0_0_30px_-10px_rgba(59,130,246,0.2)]">
+                <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center mb-4 text-blue-500">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
                 </div>
-              ))}
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2" style={{fontFamily: '"Outfit", sans-serif'}}>Email</h3>
+                <p className="text-gray-600 dark:text-gray-400 text-sm">arinchoubey9@gmail.com</p>
+              </div>
+
+              <div className="bg-white/60 dark:bg-black/60 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-8 transition-all duration-300 hover:border-purple-500/50 hover:shadow-[0_0_30px_-10px_rgba(168,85,247,0.2)]">
+                <a href="https://github.com/Anonymous-0143" target="_blank" rel="noopener noreferrer" className="block w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center mb-4 text-purple-500 hover:bg-purple-500/20 transition-colors">
+                  <Github className="w-6 h-6" />
+                </a>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2" style={{fontFamily: '"Outfit", sans-serif'}}>GitHub</h3>
+                <p className="text-gray-600 dark:text-gray-400 text-sm">github.com/Anonymous-0143</p>
+              </div>
             </div>
+
+            {/* Contact Form */}
+            <div className="w-full md:w-2/3">
+              <div className="bg-white/60 dark:bg-black/60 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-8 md:p-10 shadow-xl overflow-hidden relative">
+                <BorderBeam size={200} duration={15} colorFrom="#3b82f6" colorTo="#a855f7" delay={0} />
+                <form 
+                  className="space-y-6 relative z-10" 
+                  action="https://formspree.io/f/meerzyrq"
+                  method="POST"
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
+                      <input 
+                        type="text" 
+                        name="name"
+                        required
+                        className="w-full bg-white/50 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition-all text-gray-900 dark:text-white"
+                        placeholder="John Doe"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+                      <input 
+                        type="email" 
+                        name="email"
+                        required
+                        className="w-full bg-white/50 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition-all text-gray-900 dark:text-white"
+                        placeholder="john@example.com"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Subject</label>
+                    <input 
+                      type="text" 
+                      name="subject"
+                      required
+                      className="w-full bg-white/50 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/50 transition-all text-gray-900 dark:text-white"
+                      placeholder="How can I help you?"
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Message</label>
+                    <textarea 
+                      name="message"
+                      required
+                      rows={4}
+                      className="w-full bg-white/50 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition-all text-gray-900 dark:text-white resize-none"
+                      placeholder="Your message here..."
+                    ></textarea>
+                  </div>
+                  
+                  <button 
+                    type="submit"
+                    className="w-full bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold py-4 rounded-xl hover:scale-[1.02] transition-transform flex items-center justify-center gap-2"
+                  >
+                    Send Message
+                    <ArrowRight className="w-5 h-5" />
+                  </button>
+                </form>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
@@ -215,7 +304,7 @@ export default function LandingPage() {
             © 2026 OSCAR. All rights reserved.
           </p>
           <div className="flex gap-6" style={{display: 'flex', gap: '1.5rem'}}>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" style={{color: '#9ca3af'}}>
+            <a href="https://github.com/Anonymous-0143" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" style={{color: '#9ca3af'}}>
               <Github size={20} />
             </a>
           </div>

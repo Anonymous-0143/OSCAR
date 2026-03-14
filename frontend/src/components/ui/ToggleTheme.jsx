@@ -277,14 +277,15 @@ export const ToggleTheme = ({
                 ref={buttonRef}
                 onClick={toggleTheme}
                 className={cn(
-                    "p-2 rounded-full transition-colors duration-300 z-50",
-                    isDark ? "hover:text-amber-400 text-white" : "hover:text-blue-500 text-gray-800 dark:text-gray-200",
+                    "p-2.5 rounded-full transition-all duration-300 z-50",
+                    "bg-white/10 dark:bg-black/20 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-[0_0_5px_rgba(255,255,255,0.1)]",
+                    isDark ? "hover:text-amber-400 text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(251,191,36,0.3)]" : "hover:text-blue-500 text-gray-800 dark:text-gray-200 hover:bg-black/5 hover:shadow-[0_0_15px_rgba(59,130,246,0.3)]",
                     className
                 )}
                 {...props}
                 aria-label="Toggle theme"
             >
-                {isDark ? <Sun className="h-6 w-6" /> : <Moon className="h-6 w-6" />}
+                {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </button>
 
             {animationType !== 'flip-x-in' && (

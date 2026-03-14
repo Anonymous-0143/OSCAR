@@ -140,7 +140,7 @@ export const DynamicNavigation = ({
       <div
         ref={highlightRef}
         className={cn(
-          `absolute top-1 left-0 h-[calc(100%-8px)] my-1 rounded-full transition-all 
+          `absolute top-1 left-0 h-[calc(100%-8px)] rounded-full transition-all 
           duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] z-0`,
           defaultThemeStyles.highlight
         )}

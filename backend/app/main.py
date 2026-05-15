@@ -5,6 +5,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
 from fastapi.responses import RedirectResponse
+from fastapi.staticfiles import StaticFiles
+import os
 
 from app.config import get_settings
 from app.api.routes import user, recommendations, health, files
@@ -42,11 +44,6 @@ app = FastAPI(
 )
 
 
-@app.get("/", include_in_schema=False)
-async def root():
-    """Redirect root to API documentation."""
-    return RedirectResponse(url=f"/api/{settings.api_version}/docs")
-
 # CORS Middleware
 app.add_middleware(
     CORSMiddleware,
@@ -56,7 +53,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include routers
+# Include routers first
 app.include_router(
     health.router,
     prefix=f"/api/{settings.api_version}",
@@ -80,6 +77,18 @@ app.include_router(
     prefix=f"/api/{settings.api_version}",
     tags=["File Recommendations"]
 )
+
+# Mount static files AFTER routers to avoid intercepting API calls
+# The 'static' directory should contain the built frontend (dist)
+static_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "static")
+
+if os.path.exists(static_dir):
+    app.mount("/", StaticFiles(directory=static_dir, html=True), name="static")
+else:
+    # If static dir doesn't exist (e.g. local dev), redirect root to docs
+    @app.get("/", include_in_schema=False)
+    async def root_redirect():
+        return RedirectResponse(url=f"/api/{settings.api_version}/docs")
 
 
 if __name__ == "__main__":

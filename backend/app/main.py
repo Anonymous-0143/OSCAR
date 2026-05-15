@@ -4,6 +4,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
+from fastapi.responses import RedirectResponse
+
 from app.config import get_settings
 from app.api.routes import user, recommendations, health, files
 from app.utils import logger
@@ -38,6 +40,12 @@ app = FastAPI(
     openapi_url=f"/api/{settings.api_version}/openapi.json",
     lifespan=lifespan,
 )
+
+
+@app.get("/", include_in_schema=False)
+async def root():
+    """Redirect root to API documentation."""
+    return RedirectResponse(url=f"/api/{settings.api_version}/docs")
 
 # CORS Middleware
 app.add_middleware(
